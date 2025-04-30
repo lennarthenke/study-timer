@@ -1,11 +1,12 @@
 const POMODORO = 25 * 60 - 1;
 
 const timer = document.querySelector("#timer");
-const startBtn = document.querySelector("#start");
+const startStopBtn = document.querySelector("#start-stop");
 const resetBtn = document.querySelector("#reset");
 
 let countdown;
-let timeLeft = POMODORO; 
+let stopped = true;
+let timeLeft = POMODORO;
 
 function updateTimer() {
     const minutes = Math.floor(timeLeft / 60);
@@ -19,13 +20,24 @@ function updateTimer() {
     }
 }
 
-startBtn.addEventListener("click", () => {
-    if (countdown) return;
-    countdown = setInterval(updateTimer, 1000);
+function stopTimer() {
+    clearInterval(countdown);
+    stopped = true;
+    startStopBtn.textContent = "Start";
+}
+
+startStopBtn.addEventListener("click", () => {
+    if (stopped) {
+        countdown = setInterval(updateTimer, 1000);
+        stopped = false;
+        startStopBtn.textContent = "Pause";
+    } else {
+        stopTimer();
+    }
 });
 
 resetBtn.addEventListener("click", () => {
-    clearInterval(countdown);
+    stopTimer();
     countdown = null;
     timeLeft = POMODORO;
     timer.textContent = "25:00";
