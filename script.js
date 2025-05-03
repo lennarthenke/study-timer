@@ -12,12 +12,18 @@ const mode = document.querySelector("#mode");
 const timer = document.querySelector("#timer");
 const startStopBtn = document.querySelector("#start-stop");
 const resetBtn = document.querySelector("#reset");
+const statPomo = document.querySelector("#stat-pomo");
+const statTotal = document.querySelector("#stat-total");
+const statStreak = document.querySelector("#stat-streak");
 
 let countdown;
 let stopped = true;
 let timeLeft = POMODORO;
 let currentMode = TimerMode.POMODORO;
 let pomodoroCounter = 0;
+const stats = loadStats();
+
+renderStats();
 
 function switchMode() {
     if (currentMode === TimerMode.BREAK || currentMode == TimerMode.LONG_BREAK) {
@@ -49,6 +55,8 @@ function updateTimer() {
 
     if (timeLeft < 0) {
         stopTimer();
+        recordSession();
+        renderStats();
         switchMode();
     }
 }
@@ -57,6 +65,53 @@ function stopTimer() {
     clearInterval(countdown);
     stopped = true;
     startStopBtn.textContent = "Start";
+}
+
+function loadStats() {
+    const raw = localStorage.getItem("studyStats");
+    return raw ? JSON.parse(raw) : {
+        history: {},
+        currentStreak: 0,
+        totalFocusMinutes: 0
+    };
+}
+
+function saveStats(s) {
+    localStorage.setItem("studyStats", JSON.stringify(s));
+}
+
+function recordSession() {
+    const today = new Date().toISOString().slice(0,10);
+    if (!stats.history[today]) {
+        stats.history[today] = { pomodoros:0, breaks:0, longBreaks:0 };
+        const yesterday = new Date(Date.now() - 864e5).toISOString().slice(0,10);
+        stats.currentStreak = stats.history[yesterday]?.pomodoros > 0
+                            ? stats.currentStreak + 1
+                            : 1;
+    }
+    switch(currentMode) {
+        case TimerMode.POMODORO:
+            stats.history[today].pomodoros++;
+            stats.totalFocusMinutes += 25;
+            break;
+        case TimerMode.BREAK:
+            stats.history[today].breaks++;
+            break;
+        case TimerMode.LONG_BREAK:
+            stats.history[today].longBreaks++;
+            break;
+    }
+    saveStats(stats);
+}
+
+function renderStats() {
+    const today = new Date().toISOString().slice(0,10);
+    statPomo.textContent = stats.history[today]?.pomodoros || 0;
+    const totalMin = stats.totalFocusMinutes;
+    const hours = Math.floor(totalMin / 60);
+    const minutes = totalMin % 60;
+    statTotal.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+    statStreak.textContent = stats.currentStreak;
 }
 
 startStopBtn.addEventListener("click", () => {
@@ -81,7 +136,7 @@ resetBtn.addEventListener("click", () => {
             timeLeft = BREAK;
             timer.textContent = "05:00";
             break;
-        case TimerMode.BREAK:
+        case TimerMode.LONG_BREAK:
             timeLeft = LONG_BREAK;
             timer.textContent = "15:00";
             break;
