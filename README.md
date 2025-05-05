@@ -1,6 +1,8 @@
 # 🕒 Study Timer
 
-A simple, front-end-only Pomodoro timer built with vanilla HTML, CSS, and JavaScript.
+![Screenshot](study-timer.png)
+
+A simple, front-end-only [Pomodoro](https://en.wikipedia.org/wiki/Pomodoro_Technique) timer built with vanilla HTML, CSS, and JavaScript.
 It supports regular Pomodoro sessions, short breaks, and long breaks, following the 25/5/15 rule.
 
 ## Features
