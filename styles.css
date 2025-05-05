@@ -325,7 +325,7 @@ header {
 
 #start-stop:hover,
 #reset:hover {
-    font-weight: 455;
+	background-color: rgb(30, 30, 30);
 }
 
 #stats {
