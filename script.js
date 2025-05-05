@@ -25,6 +25,38 @@ const stats = loadStats();
 
 renderStats();
 
+if (Notification.permission === "default") {
+    Notification.requestPermission().then(permission => {
+        if (permission !== "granted") {
+            console.log("Notifcations disabled by user.");
+        }
+    });
+}
+
+function notify(title, body) {
+    if (Notification.permission === "granted") {
+        new Notification(title, {
+            body: body,
+            icon: "icon.png"
+        });
+    }
+}
+
+function sendNotification() {
+    switch(currentMode) {
+        case TimerMode.POMODORO:
+            notify("Break over!", "Time to focus for 25 minutes.");
+            break;
+        case TimerMode.BREAK:
+            notify("Time's up!", "Take a 5-minute break.");
+            break;
+        case TimerMode.LONG_BREAK:
+            notify("Time's up!", "Take a 15-minute break.");
+            break;
+    }
+}
+
+
 function switchMode() {
     if (currentMode === TimerMode.BREAK || currentMode == TimerMode.LONG_BREAK) {
         currentMode = TimerMode.POMODORO;
@@ -58,6 +90,7 @@ function updateTimer() {
         recordSession();
         renderStats();
         switchMode();
+        sendNotification();
     }
 }
 
