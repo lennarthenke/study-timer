@@ -56,7 +56,6 @@ function sendNotification() {
     }
 }
 
-
 function switchMode() {
     if (currentMode === TimerMode.BREAK || currentMode == TimerMode.LONG_BREAK) {
         currentMode = TimerMode.POMODORO;
@@ -162,6 +161,8 @@ resetBtn.addEventListener("click", () => {
     countdown = null;
     switch(currentMode) {
         case TimerMode.POMODORO:
+            stats.totalFocusMinutes += Math.floor((POMODORO - timeLeft) / 60);
+            renderStats();
             timeLeft = POMODORO;
             timer.textContent = "25:00";
             break;
