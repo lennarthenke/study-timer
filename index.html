@@ -8,19 +8,23 @@
     <link rel="icon" type="image/x-icon" href="icon.png">
 </head>
 <body>
-    <h1><img src="icon.png" alt="icon" class="icon"> Study Timer</h1>
-    <div class="container">
-        <div id="mode">Pomodoro</div>
-        <div id="timer">25:00</div>
-        <button id="start-stop">Start</button>
-        <button id="reset">Reset</button>
-    </div>
-    <h2>Statistics</h2>
-    <div id="stats">
-        <div>Pomodoros today: <span id="stat-pomo"></span></div>
-        <div>Total focus time: <span id="stat-total"></span></div>
-        <div>Current streak: <span id="stat-streak"></span></div>
-    </div>
+    <header>
+        <h1><img src="icon.png" alt="icon" class="icon"> Study Timer</h1>
+    </header>
+    <main>
+        <div class="container">
+            <div id="mode">Pomodoro</div>
+            <div id="timer" class="pomodoro">25:00</div>
+            <button id="start-stop">Start</button>
+            <button id="reset">Reset</button>
+        </div>
+        <div id="stats">
+            <h2>Stats</h2>
+            <div>Pomodoros today: <span id="stat-pomo"></span></div>
+            <div>Total focus time: <span id="stat-total"></span></div>
+            <div>Current streak: <span id="stat-streak"></span></div>
+        </div>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>

@@ -61,6 +61,7 @@ function switchMode() {
         currentMode = TimerMode.POMODORO;
         timeLeft = POMODORO;
         timer.textContent = "25:00";
+        timer.className = "pomodoro";
         mode.textContent = TimerMode.POMODORO;
     } else {
         pomodoroCounter++;
@@ -68,11 +69,13 @@ function switchMode() {
             currentMode = TimerMode.LONG_BREAK;
             timeLeft = LONG_BREAK;
             timer.textContent = "15:00";
+            timer.className = "long-break";
             mode.textContent = TimerMode.LONG_BREAK;
         } else {
             currentMode = TimerMode.BREAK;
             timeLeft = BREAK;
             timer.textContent = "05:00";
+            timer.className = "break";
             mode.textContent = TimerMode.BREAK;
         }
     }
