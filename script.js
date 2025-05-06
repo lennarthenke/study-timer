@@ -25,6 +25,9 @@ const stats = loadStats();
 
 renderStats();
 
+const bell = new Audio("bell.wav");
+bell.load();
+
 if (Notification.permission === "default") {
     Notification.requestPermission().then(permission => {
         if (permission !== "granted") {
@@ -93,6 +96,7 @@ function updateTimer() {
         renderStats();
         switchMode();
         sendNotification();
+        bell.play();
     }
 }
 
